@@ -1,0 +1,86 @@
+{% extends 'reviews/base.html' %}
+
+
+{% comment %} {% load static %} {% endcomment %}
+
+
+{% comment %} <!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title> {% endcomment %}
+        
+      {% block title %} your review{% endblock title %} 
+    
+    
+    {% comment %} </title>
+<link rel="stylesheet" href="{% static 'reviews/styles.css' %}">
+
+</head>
+<body> {% endcomment %}
+
+
+
+{% block content %}
+
+    <form action="{% url 'review' %}" method="post">
+        {% csrf_token %}
+
+        {% comment %} {% if iserror %}
+        <p>Please enter valid username</p>
+        {% endif %}
+<label for="username">Your name</label>
+        <input id="username" name="username" type="text"> {% endcomment %}
+
+
+        {% comment %} method 1 for aceessing individual items in form passed from django {% endcomment %}
+
+
+      {% comment %} {{ form }}
+        <button type="submit">Send</button>  {% endcomment %}
+
+
+{% comment %} method 2 for aceessing individual items in form passed from django {% endcomment %}
+
+        {% comment %} <div class="form-control {% if form.user_name.errors %}errors{% endif %}" >
+            {{ form.user_name.label_tag }}
+            {{ form.user_name }}
+            {{ form.user_name.errors }}
+        </div>
+
+
+
+
+
+        <button type="submit">Send</button>  {% endcomment %}
+
+{% comment %} method 3 for aceessing individual items in form passed from django {% endcomment %}
+
+
+      {% for field in form %}
+        <div class="form-control {% if form.user_name.errors %}errors{% endif %}">
+            {{ field.label_tag }}
+            {{ field }}
+            {{ field.errors }}
+             {% comment %} {% if field.errors %}
+                <ul class="errorlist">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}  {% endcomment %}
+        </div>
+    {% endfor %} 
+
+    <button type="submit">Send</button>  
+    </form>
+     
+
+
+    {% endblock content %}
+
+{% comment %} </body>
+</html> {% endcomment %}

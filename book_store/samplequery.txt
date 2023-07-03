@@ -1,0 +1,26 @@
+<QuerySet [<Book: Shyam story (5)>]>
+>>> Book.objects.all()[0].author
+<Author: Author object (1)>
+>>> Book.objects.all()[0].author.first_name
+'ghanasyam'
+>>> Book.objects.filter(author__last_name__contains="syam")
+<QuerySet []>
+>>> Book.objects.filter(author__first_name__contains="syam")
+<QuerySet [<Book: Shyam story (5)>]>
+Migrations for 'book_outlet':
+  book_outlet\migrations\0005_alter_book_author.py
+    - Alter field author on book
+(bookvenv) PS D:\udemy django\book_store> python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, book_outlet, contenttypes, sessions
+Running migrations:
+  Applying book_outlet.0005_alter_book_author... OK
+(bookvenv) PS D:\udemy django\book_store> python manage.py shell
+Python 3.10.9 | packaged by Anaconda, Inc. | (main, Mar  1 2023, 18:18:15) [MSC v.1916 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from book_outlet.models import Author,Book
+>>> shyam=Author.objects.get(id=1)
+>>> shyam.books.filter(rating__gt=3)
+<QuerySet [<Book: Shyam story (5)>]>
+>>>

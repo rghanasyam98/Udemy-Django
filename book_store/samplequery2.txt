@@ -1,0 +1,65 @@
+>>> from book_outlet.models import Country,Author,Book,Address
+>>> india=Country(name="India",code="IN")
+>>> india.save()
+>>> us=Country(name="America",code="US")
+>>> us.save()                            
+>>> b1=Book.objects.all()[0]
+>>> b1.published_countries
+<django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager object at 0x00000204364AC9A0>
+>>> b1.published_countries.add(india)
+>>> b1.published_countries.add(us)    
+>>> b1.published_countries
+<django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager object at 0x00000204364775B0>
+>>> list(b1.published_countries)
+TypeError: 'ManyRelatedManager' object is not iterable
+>>> b1.published_countries.all()
+<QuerySet [<Country: Country object (1)>, <Country: Country object (2)>]>
+>>> for x in b1.published_countries.all()
+  File "<console>", line 1
+    for x in b1.published_countries.all()
+                                        ^
+SyntaxError: incomplete input
+>>> for x in b1.published_countries.all():
+... print(x.name)
+  File "<console>", line 2
+    print(x.name)
+    ^^^^^
+IndentationError: expected an indented block after 'for' statement on line 1
+>>> for x in b1.published_countries.all():
+...     print(x.name)
+...
+India
+America
+>>> Book.objects.filter(published_countires__name="India")
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\sql\query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\sql\query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\sql\query.py", line 1415, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\sql\query.py", line 1225, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "D:\udemy django\book_store\bookvenv\lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'published_countires' into field. Choices are: author, author_id, id, is_bestselling, published_countries, rating, slug, title
+>>> Book.objects.filter(published_countries__name="India") 
+<QuerySet [<Book: Shyam story (5)>]>
+>>> india = Country.objects.get(name='India')
+>>> books_published_in_india = india.book_set.all()
+>>>
+>>> for book in books_published_in_india:
+...     print(book.title)
+...
+Shyam story
+>>>
+>>>

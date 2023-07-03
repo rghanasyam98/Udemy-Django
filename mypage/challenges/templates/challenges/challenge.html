@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block page_title %}
+
+{% endblock %}
+
+    {% block content %}
+
+    {% include "challenges/includes/header.html" %}
+  <h1>Hello, World! </h1>
+  <h2>{{ month_name|title }}</h2>
+  {% comment %} {% if month not Non %} {% endcomment %}
+  <h2>{{ month|default_if_none:"no month" }}</h2>
+  {% comment %} {% endif %} {% endcomment %}
+  {% comment %} <p></p> {% endcomment %}
+
+  {% endblock %}

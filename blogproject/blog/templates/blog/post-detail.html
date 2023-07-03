@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}This post title{% endblock title %} 
+
+{% block css_files %}
+{% comment %} <link rel="stylesheet" href="{% static 'blog/all-posts.css' %}"> {% endcomment %}
+<link rel="stylesheet" href="{% static 'post-detail.css' %}">
+
+{% endblock css_files %}
+
+{% block content %}
+
+{% if comment_form.errors %}
+<div id="alert">
+    <h2>Saving the comment failed</h2>
+    <p>Please check the comment form below the post and fix yor errors.</p>
+    <a href="#comment-form">Fix this</a>
+</div>
+{% endif %}
+
+
+<section id="summary">
+    <h2>{{ posts.title }}</h2>
+    <div>
+        {% for tag in tags %}
+         <span>
+            {{ tag.caption }}
+         </span>
+        {% endfor %}
+    </div>
+
+<div id="read-later">
+    <form action="{% url 'read-later' %}" method="POST">
+{% csrf_token %}
+<input type="hidden" value="{{ posts.id }}" name="post_id" >
+        <button>
+            
+            {% if is_saved_for_later %}
+            Remove from saved
+            {% else %}
+            Read Later
+            {% endif %}
+            
+           </button>
+    </form>
+</div>
+
+    <article>
+        {% comment %} <img src=" {% static 'blog/images/'|add:posts.image_name %}" alt="post title"> {% endcomment %}
+        <img src="{{ posts.image.url }}" alt="post title">
+
+        <address>
+            {{posts.author.email_address }}
+          by  <a href="mailto:{{posts.author.email_address }}">
+            {{ posts.author }}
+        </a>
+        </address>
+        
+            <div>
+                last updated on <time>{{ posts.date|date:"d M Y" }}</time>
+            </div>
+        
+    </article>
+</section>
+
+
+
+
+<main>
+    <p>
+        {{ posts.content | linebreaks }}
+    </p>
+    {% comment %} <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, cum alias. Dicta officiis cupiditate laborum temporibus molestias. Doloribus earum dolore aspernatur doloremque eum aperiam neque debitis. Reiciendis, doloremque voluptatibus! Ducimus.
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, cum alias. Dicta officiis cupiditate laborum temporibus molestias. Doloribus earum dolore aspernatur doloremque eum aperiam neque debitis. Reiciendis, doloremque voluptatibus! Ducimus.
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, cum alias. Dicta officiis cupiditate laborum temporibus molestias. Doloribus earum dolore aspernatur doloremque eum aperiam neque debitis. Reiciendis, doloremque voluptatibus! Ducimus.
+    </p> {% endcomment %}
+
+</main>
+
+
+<section id="comments">
+<ul>
+    {% for comment in comments  %}
+    <li>
+        <h2>{{ comment.user_name }}</h2>
+        <p>{{ comment.text }}</p>
+    </li>
+    {% endfor %}
+</ul>
+
+</section>
+
+<section id="comment-form"> 
+<h2>Your comment</h2>
+    <form action="{% url 'post-details-page' posts.slug %}" method="POST">
+{% csrf_token %}
+
+{% for form_field in comment_form  %}
+<div class="form-control {% if form_field.errors %}invalid{% endif %}">
+    {{ form_field.label_tag }}
+    {{ form_field }}
+    {{ form_field.errors }}
+</div>
+
+{% endfor %}
+
+<button>Submit</button>
+    </form>
+</section>
+
+
+
+
+
+{% endblock %}

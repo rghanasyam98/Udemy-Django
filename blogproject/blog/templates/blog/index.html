@@ -1,0 +1,60 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block title %}My blog{% endblock title %} 
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'blog/index.css' %}">
+<link rel="stylesheet" href="{% static 'blog/post.css' %}">
+
+
+{% endblock css_files %}
+{% block content %}
+
+
+<section id="welcome">
+<header>
+    <img src="{% static 'blog/images/max.png' %}" alt="Shyam the author">
+    <h2>MAXIMILION BLOG</h2>
+</header>
+<P>
+    Hai iam max i love to blog about tech and the world
+</P>
+</section >
+
+<section id="latest-posts">
+    <h2>My latest Thoughts</h2>
+    <ul>
+
+ {% for post in posts %}
+        {% include "blog/includes/post.html" %}
+{% endfor %}       
+        {% comment %} <li>
+            <article class="post" > 
+                <a href="">
+                    <img src="{% static 'blog/images/mountains.jpg' %}" alt="Mountain hiking">
+                    <div class="post_content">
+                        <h3>mOUNTAIN hiking</h3>
+                        <p>asnfhsihfiakbKDALOHIABC MA CKLAIGUAGUGCJBAJBSCALSBIGE.JMCBAKGEUGFAJBC</p>
+    
+                    </div>
+                </a>
+    
+            </article>
+        </li> {% endcomment %}
+    </ul>
+</section>
+<section id="about">
+    <h2>
+        what i do
+    </h2>
+    <p>
+        andaekjaigfabcabbegikcanvjbuegalfkfhiafajbcajbuaegcbjab
+    </p>
+    <p>
+        akfniaeuafianfkeajfojeiauaeytyvcabjnckmaoeaioyeucbajcbahug
+    </p>
+
+</section>
+
+{% endblock content %}
